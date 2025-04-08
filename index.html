@@ -44,7 +44,8 @@
     const getColor = (count) => {
       if (count >= 3) return 'bg-red-500';
       if (count === 2) return 'bg-orange-400';
-      return 'bg-green-500';
+	    if (count === 1) return 'bg-yellow-400';
+      return 'bg-blue-500';
     };
 
     function renderDashboard() {
