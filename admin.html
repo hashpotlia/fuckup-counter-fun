@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DCO Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .tile {
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+    }
+    .tile:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gray-800 text-white p-10">
+
+  <nav class="mb-4">
+    <a href="index.html" class="text-blue-300 hover:text-blue-500">← Back to Dashboard</a>
+  </nav>
+
+  <h1 class="text-3xl font-bold mb-8 text-center">DCO Admin Dashboard</h1>
+
+  <div id="admin-dashboard" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+  </div>
+
+  <script>
+    let dcos = JSON.parse(localStorage.getItem('dcoCounts')) || [
+      { name: 'Hash (tag)', count: 0 },
+      { name: 'Captain', count: 0 },
+      { name: 'Uncle Vish', count: 0 },
+      { name: 'Dev (Tall Boy)', count: 0 },
+      { name: 'Harkaran (singh is king)', count: 0 },
+      { name: 'Alex (d’ L4)', count: 0 },
+      { name: 'Commander (Blame Him)', count: 0 },
+    ];
+
+    const updateLocalStorage = () => {
+      localStorage.setItem('dcoCounts', JSON.stringify(dcos));
+    };
+
+    function renderAdminDashboard() {
+      const dashboard = document.getElementById('admin-dashboard');
+      dashboard.innerHTML = '';
+
+      dcos.forEach((dco, index) => {
+        const tile = document.createElement('div');
+        tile.className = `tile bg-gray-700 rounded-xl shadow-xl p-6 text-center`;
+
+        tile.innerHTML = `
+          <div class="text-4xl font-bold">${dco.count}</div>
+          <div class="text-xl mt-2 mb-4">${dco.name}</div>
+          <button onclick="changeCounter(${index}, 1)" class="bg-green-500 hover:bg-green-400 text-white py-1 px-3 rounded mr-2">+ Add</button>
+          <button onclick="changeCounter(${index}, -1)" class="bg-red-500 hover:bg-red-400 text-white py-1 px-3 rounded">- Remove</button>
+        `;
+
+        dashboard.appendChild(tile);
+      });
+    }
+
+    function changeCounter(index, delta) {
+      dcos[index].count = Math.max(0, dcos[index].count + delta);
+      updateLocalStorage();
+      renderAdminDashboard();
+    }
+
+    renderAdminDashboard();
+  </script>
+
+</body>
+</html>
